@@ -21,16 +21,12 @@ this repository; `01_download_data.py` downloads both from public sources
 (Microsoft Planetary Computer and NOAA) into `data/`. The Unified Reef Map field
 reference used in the paper is included as `data/urm_keys.geojson`; step 01
 does not regenerate it. See Data sources below for details.
-`README_R5_additions.md` describes the revision-round scripts (07-10) and the
-run order.
 
 ## Project structure
 
 ```
 fknms_ieee_access/
 ├── README.md
-├── README_R5_additions.md   # Round 5 (revision) scripts and run order
-├── LICENSE                  # MIT
 ├── requirements.txt
 │
 ├── fknms_core.py            # scene IO, water masking, Lyzenga DII, feature stack,
@@ -49,15 +45,14 @@ fknms_ieee_access/
 ├── 04_energy.py             # per-stage energy, models fitted on the URM-supervised draw
 ├── 05_ablations.py          # DII, independent bathymetry, and learning-curve ablations
 ├── 06_figures.py            # manuscript figures from the output CSVs
-│
-├── 07_fig9_extension.py     # Round 5: MLP + 2D CNN learning curve at 20k and 50k/class
-├── 08_holdout_majority_rate.py # Round 5: holdout test-pixel class shares (baseline)
-├── 09_block_audit.py        # Round 5: per-scene test-block counts
-├── 10_stats_additions.py    # Round 5: Friedman omnibus test + per-scene kappa
-├── run_all_overnight.py     # Round 5 runner (09, 08, 10, 07, 06); logs to run_all.log
+├── 07_fig9_extension.py     # learning-curve extension for the two deep models (Figure 9)
+├── 08_holdout_majority_rate.py  # majority-class rate on each protocol's test pixels (Section V-C, Figure 3a)
+├── 09_block_audit.py        # per-scene spatial-block counts per protocol (Section IV-G)
+├── 10_stats_additions.py    # Friedman omnibus test and per-scene kappa extraction (Tables 10, 14)
+├── run_all_overnight.py     # sequential, resumable runner for steps 07-10 plus figures
 │
 ├── data/                    # populated by 01; ships with urm_keys.geojson (field reference)
-├── outputs/                 # CSVs written by 02-05, 03b, 03c, 07-10
+├── outputs/                 # CSVs written by 02-05, 03b, 03c
 ├── figures/                 # PNGs written by 03 and 06
 └── reference_outputs/       # the CSVs and figures from the run reported in the paper
 ```
@@ -125,10 +120,26 @@ python 05_ablations.py
 # 9. figures from the output CSVs
 python 06_figures.py
 
-# 10. revision-round analyses (07-10; see README_R5_additions.md):
-#     09, 08, 10, then 07 at 20,000 and 50,000 per class, then 06 again
-python run_all_overnight.py
+# 10. extended analyses: deep-model learning-curve points at 20,000 and 50,000
+#     samples per class, test-pixel majority baselines, the block-count audit,
+#     and the Friedman test with per-scene kappa extraction
+python 07_fig9_extension.py --sizes 20000
+python 07_fig9_extension.py --sizes 50000
+python 08_holdout_majority_rate.py
+python 09_block_audit.py
+python 10_stats_additions.py
+#     or run all of step 10 unattended (skips already-completed sizes on re-run):
+#     python run_all_overnight.py
 ```
+
+Script 07 calls `buffered_benchmark()` from `05_ablations.py` unchanged, so the
+extended learning-curve points inherit the identical protocol (300 m buffer,
+five-fold spatial CV plus the geographic holdout, seed 42, patch 9, the same
+epochs) with no re-tuning, and it logs every training draw's actual per-class
+counts to `outputs/learning_curve_draws.csv` because `sample_labeled` draws
+without replacement. Scripts 08-10 are analysis-only and need no scene data
+beyond what 08 reads to rebuild each protocol's test pixels; 09 and 10 run in
+seconds from the per-block metrics and benchmark summary.
 
 The nine scenes used in the paper are three 2024 seasonal windows (dry, spring,
 wet) plus six additional dates from October 2022 to February 2024. Selecting the
@@ -139,7 +150,11 @@ level (its cloud and cloud-shadow pixels are masked as for every scene).
 
 ### Runtime and resumption
 
-Steps 03_benchmark, 03c, and 04_energy dominate the total runtime. 04_energy is
+Steps 03_benchmark, 03c, and 04_energy dominate the baseline runtime, and the
+50,000-sample learning-curve extension in step 07 is the longest single step
+(roughly a day for the convolutional network on the reference CPU);
+`run_all_overnight.py` logs progress to `run_all.log` and skips completed
+learning-curve sizes when re-run. 04_energy is
 resumable: rerun the same command after any interruption and it continues from
 where it stopped. To verify the numbers without rerunning, use
 `reference_outputs/`, which contains every CSV and figure from the run reported
@@ -270,8 +285,9 @@ exclusion uses a scene-derived 5th-percentile cutoff), so its reference
 - Energy is estimated with CodeCarbon, which derives energy from processor power
   models and load rather than a wall-socket meter (there is no RAPL counter on the
   Windows host). Relative comparisons on identical hardware are more reliable than
-  absolute values, and runtimes vary by machine, so they are not tabulated per
-  model.
+  absolute values. Runtimes vary by machine; the reported run's per-stage
+  wall-clock times are in `reference_outputs/energy_per_stage.csv` (seconds_mean)
+  and are tabulated in the article's Table 7.
 
 ## Benthic classes
 
