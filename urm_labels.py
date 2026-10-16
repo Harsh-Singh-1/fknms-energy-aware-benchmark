@@ -3,7 +3,7 @@ urm_labels.py
 Turn Florida's Unified Reef Map (URM) into supervised habitat labels on a
 scene grid.
 
-This replaces the adaptive spectral pseudo-labels with independent,
+This replaces the fixed-threshold spectral pseudo-labels with independent,
 field-validated labels, which removes the circularity the reviewers flagged.
 Benthic labels (Sand/Bare=2, Seagrass=3, Coral/Hard-bottom=4) come entirely
 from URM. Open Deep Water=1 is optional and, when requested, is taken from the

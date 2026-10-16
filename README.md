@@ -185,10 +185,15 @@ the same buffer.
 | kNN         | 0.505          | 0.222             | 0.543         |
 | 2D CNN      | 0.506          | 0.230             | 0.531         |
 
-A majority-class baseline (always predict seagrass, the 53 percent class) scores
-0.53. The classifiers exceed it by about 0.02 (holdout) to 0.04 (cross
-validation); the gain comes from the minority Sand and Coral classes. No pairwise
-difference is significant under the conservative scene-level test. Evaluating on
+A constant always-predict-Seagrass baseline scores 0.564 on the holdout test
+pixels and 0.508 on the spatial-CV test pixels (outputs/test_class_shares.csv).
+No model exceeds the holdout rate on overall accuracy; every model exceeds the
+CV rate, and the models' advantage over the constant predictor lies in kappa
+and macro-F1 on the minority Sand and Coral classes. A Friedman omnibus test
+finds a consistent classifier ranking across scenes (holdout p = 0.011; CV
+p < 0.001; outputs/friedman_omnibus.csv); scene-level pairwise tests are
+descriptive only, since the Wilcoxon-Holm combination cannot reach corrected
+significance with nine scenes. Evaluating on
 all held-out URM-labeled pixels instead of the 100,000-pixel capped sample
 changes overall accuracy by at most 0.0047 across every scene and model
 (`reference_outputs/test_cap_sensitivity.csv`).
@@ -223,7 +228,7 @@ models.
 
 ### Pseudo-label pipeline versus the field reference
 
-Trained and tested on adaptive spectral pseudo-labels, the classifiers reach 98.5
+Trained and tested on fixed spectral-threshold pseudo-labels, the classifiers reach 98.5
 to 99.4 percent internal accuracy. Compared against the Unified Reef Map over the
 same area, with deep water excluded from both sides, the same pipeline agrees only
 about 25 percent of the time (Random Forest 24.5 percent, XGBoost 25.3 percent,
@@ -241,13 +246,20 @@ coral overlap alone.
   accuracy by 0.002 to 0.010 (spatial CV) and by 0.005 to 0.009 for seven of eight
   models (geo-holdout); Coral/Hard-bottom F1 rises by about 0.009 on average, up to
   0.014 for logistic regression.
-- **Learning curve:** accuracy plateaus by 5,000 samples per class; the neural
-  networks gain the most from added data but do not overtake the low-energy models
-  at any size.
+- **Learning curve:** gains for the classical models in the sweep from 2,000 to
+5,000 samples per class are within their scene-to-scene spreads (logistic
+regression +0.005, random forest +0.012). Extended runs for the two deep models
+(07_fig9_extension.py, outputs/ablation_learning_curve.csv) show the 2D CNN
+continuing to improve through 50,000 samples per class under spatial CV,
+overtaking the main benchmark's best classical mean there, while both deep
+models remain below logistic regression and the majority rate under the
+geographic holdout.
 
 ## Important caveats
 
-- The pseudo-label protocol uses adaptive spectral thresholds, so its reference
+- The pseudo-label protocol uses fixed, author-specified spectral thresholds
+(evaluated in the order Sand, then Seagrass, then Coral; the deep-water
+exclusion uses a scene-derived 5th-percentile cutoff), so its reference
   samples are generated from the same spectral features used for classification.
   This circularity inflates its absolute accuracy and makes that number a measure
   of self-consistency, not of agreement with the seabed. The URM-supervised

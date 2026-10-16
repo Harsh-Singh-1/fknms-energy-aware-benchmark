@@ -2,7 +2,7 @@
 fknms_core.py
 Shared core for the FKNMS IEEE Access revision experiments (E1-E7).
 
-Ports the preprocessing, Lyzenga depth-invariant index (DII), and adaptive
+Ports the preprocessing, Lyzenga depth-invariant index (DII), and fixed-threshold
 spectral labelling from the original 02b_classify_only.py, and adds the
 machinery the reviewers asked for: fold-internal threshold derivation,
 spatial cross-validation, a wider model zoo, a genuine patch-based 2D CNN,
@@ -158,7 +158,9 @@ def apply_features(bands, water, params):
 
 
 def make_labels(feats, deep, shallow, use_dii=True):
-    """Adaptive spectral pseudo-labels (the same rules as V3). use_dii=False is
+    """Fixed-threshold spectral pseudo-labels (the same rules as V3), applied in
+    the order Sand, then Seagrass, then Coral; the deep-water exclusion uses a
+    scene-derived 5th-percentile cutoff. use_dii=False is
     kept for the DII ablation. NOTE: these labels are generated from the same
     spectral features used for classification; downstream framing treats them
     as a reproducible pseudo-labelling protocol, not operational ground truth.

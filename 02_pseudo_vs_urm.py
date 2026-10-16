@@ -5,7 +5,7 @@ Two comparisons that together demonstrate the circularity of the spectral
 pseudo-label protocol on identical imagery:
 
   A. Internal accuracy of the pseudo-label pipeline (Table 5). A classifier is
-     trained and scored on the same adaptive spectral pseudo-labels, using a
+     trained and scored on the same fixed-threshold spectral pseudo-labels, using a
      held-out split. Because the labels are generated from the same spectral
      features the classifier reads, accuracy is very high (about 0.98 to 0.99).
      This measures self-consistency with the labeling rule, not agreement with
