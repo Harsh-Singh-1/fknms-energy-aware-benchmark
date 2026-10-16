@@ -55,7 +55,6 @@ fknms_ieee_access/
 ├── 09_block_audit.py        # Round 5: per-scene test-block counts
 ├── 10_stats_additions.py    # Round 5: Friedman omnibus test + per-scene kappa
 ├── run_all_overnight.py     # Round 5 runner (09, 08, 10, 07, 06); logs to run_all.log
-├── make_packet.py           # author's packaging script; not needed to reproduce
 │
 ├── data/                    # populated by 01; ships with urm_keys.geojson (field reference)
 ├── outputs/                 # CSVs written by 02-05, 03b, 03c, 07-10
