@@ -1,0 +1,3 @@
+protocol,n_scenes,n_models,chi2,df,p,kendalls_W
+geo_holdout,9,9,19.759,8,0.011287,0.274
+spatial_cv,9,9,44.119,8,1e-06,0.613

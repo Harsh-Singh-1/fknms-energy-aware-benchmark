@@ -1,0 +1,16 @@
+"# model=RF  pooled 3x3 (row=URM reference, col=pseudo-label prediction)  overall_agreement=0.2451  N=65819031"
+URM \ pred,Sand/Bare,Seagrass,Coral/Hard-bottom,row_total
+Sand/Bare,380481,410351,11973884,12764716
+Seagrass,2675342,335308,32440708,35451358
+Coral/Hard-bottom,1859113,326732,15417112,17602957
+col_total,4914936,1072391,59831704,65819031
+# predicted deep water: total=31559316  in_URM_unmapped=31007841  on_URM_benthic=551475
+
+"# model=XGBoost  pooled 3x3 (row=URM reference, col=pseudo-label prediction)  overall_agreement=0.2530  N=65597954"
+URM \ pred,Sand/Bare,Seagrass,Coral/Hard-bottom,row_total
+Sand/Bare,276407,412661,11950572,12639640
+Seagrass,1650510,353375,33427124,35431009
+Coral/Hard-bottom,1221797,335974,15969534,17527305
+col_total,3148714,1102010,61347230,65597954
+# predicted deep water: total=28331160  in_URM_unmapped=27558608  on_URM_benthic=772552
+

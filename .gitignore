@@ -1,0 +1,8 @@
+# Inputs downloaded by 01_download_data.py (large; not versioned).
+# The bundled URM field reference is the one exception.
+data/*
+!data/urm_keys.geojson
+
+# Python bytecode
+__pycache__/
+*.pyc

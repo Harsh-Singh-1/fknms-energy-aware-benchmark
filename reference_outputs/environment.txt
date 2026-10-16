@@ -1,0 +1,5 @@
+python 3.13.14
+numpy 2.5.1
+scipy 1.18.0
+pandas 3.0.5
+matplotlib 3.11.1

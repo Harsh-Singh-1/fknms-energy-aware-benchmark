@@ -1,0 +1,26 @@
+# Core numerics
+numpy
+pandas
+scipy
+
+# Classifiers
+scikit-learn
+xgboost
+lightgbm
+torch            # MLP and 2D CNN (CPU build is sufficient)
+
+# Geospatial IO
+rasterio
+geopandas
+shapely
+
+# Energy measurement
+codecarbon
+
+# Figures
+matplotlib
+
+# Data acquisition (step 01 only)
+pystac-client
+planetary-computer
+requests
