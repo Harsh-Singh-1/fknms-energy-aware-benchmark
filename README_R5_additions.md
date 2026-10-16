@@ -1,8 +1,10 @@
 # Round 5 additions (V4 supplementary package)
 
 This package extends the V3 codebase with four scripts added for the final
-revision round. All existing scripts, reference outputs, and the URM cache are
-unchanged from V3; nothing published was modified.
+revision round. One existing script changed: `06_figures.py` now draws the
+holdout test-pixel majority baseline on Figure 3a (0.564, the pooled seagrass
+share reported by `08_holdout_majority_rate.py`). All other existing scripts,
+the reference outputs, and the URM cache are unchanged from V3.
 
 ## New scripts
 
@@ -50,3 +52,14 @@ early, and budget hours for the 50k CNN fits on CPU.
 
 `run_all_overnight.py` runs the same sequence unattended, logging to
 `run_all.log`; completed learning-curve sizes are skipped on a re-run.
+
+From a fresh clone, `06_figures.py` regenerates only Figure 9; its other inputs
+come from steps 03-05. To redraw Figure 3a with the baseline line from the
+published CSVs, run:
+
+```
+python 06_figures.py --out reference_outputs --figdir <new_dir>
+```
+
+Use a separate `--figdir`: `reference_outputs/` holds the pre-revision learning
+curve, so writing to `figures/` would replace the revised Figure 9.

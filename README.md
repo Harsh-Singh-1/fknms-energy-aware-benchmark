@@ -29,6 +29,8 @@ run order.
 ```
 fknms_ieee_access/
 ├── README.md
+├── README_R5_additions.md   # Round 5 (revision) scripts and run order
+├── LICENSE                  # MIT
 ├── requirements.txt
 │
 ├── fknms_core.py            # scene IO, water masking, Lyzenga DII, feature stack,
@@ -48,8 +50,15 @@ fknms_ieee_access/
 ├── 05_ablations.py          # DII, independent bathymetry, and learning-curve ablations
 ├── 06_figures.py            # manuscript figures from the output CSVs
 │
+├── 07_fig9_extension.py     # Round 5: MLP + 2D CNN learning curve at 20k and 50k/class
+├── 08_holdout_majority_rate.py # Round 5: holdout test-pixel class shares (baseline)
+├── 09_block_audit.py        # Round 5: per-scene test-block counts
+├── 10_stats_additions.py    # Round 5: Friedman omnibus test + per-scene kappa
+├── run_all_overnight.py     # Round 5 runner (09, 08, 10, 07, 06); logs to run_all.log
+├── make_packet.py           # author's packaging script; not needed to reproduce
+│
 ├── data/                    # populated by 01; ships with urm_keys.geojson (field reference)
-├── outputs/                 # CSVs written by 02-05, 03b, 03c
+├── outputs/                 # CSVs written by 02-05, 03b, 03c, 07-10
 ├── figures/                 # PNGs written by 03 and 06
 └── reference_outputs/       # the CSVs and figures from the run reported in the paper
 ```
@@ -116,6 +125,10 @@ python 05_ablations.py
 
 # 9. figures from the output CSVs
 python 06_figures.py
+
+# 10. revision-round analyses (07-10; see README_R5_additions.md):
+#     09, 08, 10, then 07 at 20,000 and 50,000 per class, then 06 again
+python run_all_overnight.py
 ```
 
 The nine scenes used in the paper are three 2024 seasonal windows (dry, spring,
