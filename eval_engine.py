@@ -1,9 +1,9 @@
 """
-E8 - URM-supervised classification (non-circular).
+URM-supervised classification engine (non-circular).
 
 Trains the same model set on real habitat labels rasterized from Florida's
 Unified Reef Map instead of spectral pseudo-labels, and validates on spatially
-held-out URM blocks. This breaks the circularity the reviewers flagged: labels
+held-out URM blocks. This breaks the circularity of same-source labeling: labels
 come from an independent field-validated source, features come from the imagery,
 and train/test pixels never share a spatial block.
 

@@ -1,13 +1,13 @@
 """
-08_holdout_majority_rate.py -- majority-class rate on the actual holdout test
-pixels (Round 5, R2 comment 2).
+08_holdout_majority_rate.py -- majority-class rate on the actual test pixels
+of each protocol.
 
 Rebuilds, per scene, the EXACT geographic-holdout test set used by
 03_benchmark.py -- URM-labeled water pixels in the eastern half, buffered 300 m
 from the western training pool, capped at --test_cap with seed --seed via
 eval_engine.gather_test -- and reports the class shares of those pixels. The
-pooled seagrass share across scenes is the correct no-information baseline for
-Section V-C and the dashed line in Figure 3a, replacing the whole-area 0.53.
+pooled seagrass share across scenes is the no-information baseline for
+Section V-C and the dashed line in Figure 3a.
 
 Outputs (in --out):
     holdout_test_class_shares.csv   per scene: n_test, share per class,
@@ -131,9 +131,8 @@ def main():
               f"pixel-weighted majority rate {wmean:.4f} "
               f"(scene range {min(r['majority_rate'] for r in cvrows):.4f}"
               f"-{max(r['majority_rate'] for r in cvrows):.4f})")
-    print("Use the pooled (or scene-mean) rate as the no-information baseline in "
-          "Section V-C and Figure 3a; the whole-area 0.53 does not describe the "
-          "buffered eastern test pixels.")
+    print("The pooled (or scene-mean) rate is the no-information baseline used in "
+          "Section V-C and Figure 3a of the article.")
 
     p = out / "test_class_shares.csv"
     with open(p, "w", newline="") as f:

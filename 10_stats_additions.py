@@ -1,17 +1,16 @@
 """
-10_stats_additions.py -- Friedman omnibus test and kappa extraction (Round 5,
-R2 comments 1 and 5).
+10_stats_additions.py -- Friedman omnibus test and per-scene kappa extraction.
 
-Comment 1: the scene-level Wilcoxon signed-rank test with Holm correction over
-36 pairs cannot reach significance at n=9 (minimum exact two-sided p = 2/512 =
-0.0039 > 0.05/36 = 0.0014). This script adds the attainable scene-level
-omnibus: a Friedman test across the nine classifiers over the nine paired
-scenes, per protocol, with Kendall's W as effect size and the mean rank of
-every model. The block bootstrap (03b) remains the pairwise procedure.
+Scene-level omnibus: the scene-level Wilcoxon signed-rank test with Holm
+correction over 36 pairs cannot reach significance at n=9 (minimum exact
+two-sided p = 2/512 = 0.0039 > 0.05/36 = 0.0014), so this script provides the
+attainable scene-level omnibus: a Friedman test across the nine classifiers
+over the nine paired scenes, per protocol, with Kendall's W as effect size and
+the mean rank of every model. The block bootstrap (03b) is the pairwise
+procedure.
 
-Comment 5: the kappa range quoted in the abstract/conclusion (0.12-0.39) is in
-no table. This script extracts per-scene Cohen's kappa under the geographic
-holdout for every model, reports the full range (traceable), and writes the
+Kappa extraction: this script extracts per-scene Cohen's kappa under the
+geographic holdout for every model, reports the full range, and writes the
 kappa columns for Table 14's three models.
 
 Inputs: benchmark_summary.csv (default: reference_outputs, i.e. the published
@@ -95,9 +94,7 @@ def main():
     print(f"  min at {which_lo}, max at {which_hi}")
     with open(out / "kappa_range.txt", "w") as f:
         f.write(f"Per-scene Cohen's kappa, geographic holdout, all nine models:\n"
-                f"min = {lo:.4f} at {which_lo}\nmax = {hi:.4f} at {which_hi}\n"
-                f"Quote this computed range in the abstract/conclusion in place "
-                f"of any untraceable figure.\n")
+                f"min = {lo:.4f} at {which_lo}\nmax = {hi:.4f} at {which_hi}\n")
 
     t14 = []
     for s in sorted(kap):

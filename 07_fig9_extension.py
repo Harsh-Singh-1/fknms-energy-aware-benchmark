@@ -1,5 +1,5 @@
 """
-07_fig9_extension.py -- Fig. 9 learning-curve extension (Round 5, R2 comment 9).
+07_fig9_extension.py -- Fig. 9 learning-curve extension for the two deep models.
 
 Adds larger training-set sizes (default 20,000 and 50,000 per class) for the
 two deep models (MLP, 2D_CNN) under the IDENTICAL protocol as the published
@@ -12,8 +12,7 @@ Honesty guard: fknms_core.sample_labeled silently draws min(n, available)
 without replacement. At 20k/50k a class pool could in principle fall short,
 which would make the x-axis lie. This script wraps the sampler to LOG every
 draw's requested size and actual per-class counts (learning_curve_draws.csv),
-and prints a warning on any shortfall. Report the minima in the response
-letter either way.
+and prints a warning on any shortfall.
 
 Outputs (in --out, default ./outputs):
     ablation_learning_curve_ext.csv   new rows only (nsamp in {sizes})

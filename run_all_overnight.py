@@ -1,18 +1,18 @@
 """
-run_all_overnight.py -- Round 5 revision runner.
+run_all_overnight.py -- extended-analyses runner.
 
-Runs every Round-5 computation in order, logging to run_all.log next to this
+Runs the extended analyses in order, logging to run_all.log next to this
 script. Safe to re-run: completed learning-curve sizes are detected from the
 merged CSV (36 rows per size = 9 scenes x 2 models x 2 protocols) and skipped,
 and 07's merge logic replaces rather than duplicates on a re-run.
 
 Order (cheap and independent first, so early failures surface fast):
-    1. 09_block_audit.py            instant       (R2 comment 11 receipt)
-    2. 08_holdout_majority_rate.py  minutes       (comment 2 baselines, both protocols)
-    3. 10_stats_additions.py        instant       (comments 1 and 5)
-    4. 07_fig9_extension.py 20000   hours         (comment 9)
-    5. 07_fig9_extension.py 50000   hours         (comment 9)
-    6. 06_figures.py                minutes       (regenerates Fig 3 line + Fig 9)
+    1. 09_block_audit.py            instant       (block-count audit)
+    2. 08_holdout_majority_rate.py  minutes       (test-pixel majority baselines)
+    3. 10_stats_additions.py        instant       (Friedman omnibus and kappa)
+    4. 07_fig9_extension.py 20000   hours         (learning-curve extension)
+    5. 07_fig9_extension.py 50000   hours         (learning-curve extension)
+    6. 06_figures.py                minutes       (regenerates Figures 3 and 9)
 
 Run from this folder:
     python run_all_overnight.py
@@ -80,7 +80,7 @@ def size_done(size):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Run all Round-5 computations in order.")
+    ap = argparse.ArgumentParser(description="Run the extended analyses in order.")
     ap.add_argument("--sizes", type=int, nargs="+", default=[20000, 50000])
     ap.add_argument("--skip", nargs="*", default=[],
                     help="step numbers to skip, e.g. --skip 08 09")
@@ -92,7 +92,7 @@ def main():
     data_args = ["--data", a.data] if a.data else []
 
     log("=" * 60)
-    log(f"Round-5 runner starting | python={py} | sizes={a.sizes} | skip={a.skip}")
+    log(f"Extended-analyses runner starting | sizes={a.sizes} | skip={a.skip}")
 
     if "09" not in a.skip:
         run_step("09 block audit", [py, "09_block_audit.py"], a.stop_on_error)
@@ -115,7 +115,7 @@ def main():
     if "06" not in a.skip:
         run_step("06 regenerate figures", [py, "06_figures.py"], a.stop_on_error)
 
-    log("Round-5 runner finished. Review run_all.log, outputs/, and figures/.")
+    log("Runner finished. Review run_all.log, outputs/, and figures/.")
     log("Check learning_curve_draws.csv for any '!! draw shortfall' events "
         "before quoting the new Fig. 9 sizes.")
 

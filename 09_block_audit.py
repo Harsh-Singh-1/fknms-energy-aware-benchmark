@@ -1,5 +1,5 @@
 """
-09_block_audit.py -- per-scene spatial-block counts (Round 5, R2 comment 11).
+09_block_audit.py -- per-scene spatial-block counts per protocol.
 
 Reads benchmark_block_metrics.csv (the per-block confusion export of
 03_benchmark.py that feeds the spatial bootstrap) and reports, per scene and

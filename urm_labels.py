@@ -4,12 +4,12 @@ Turn Florida's Unified Reef Map (URM) into supervised habitat labels on a
 scene grid.
 
 This replaces the fixed-threshold spectral pseudo-labels with independent,
-field-validated labels, which removes the circularity the reviewers flagged.
+field-validated labels, which removes the circularity of same-source labeling.
 Benthic labels (Sand/Bare=2, Seagrass=3, Coral/Hard-bottom=4) come entirely
 from URM. Open Deep Water=1 is optional and, when requested, is taken from the
 scene water mask where URM is unmapped, because URM does not map open water.
 
-Used by e8_urm_supervised.py. The download path can cache to a local file with
+The download path can cache to a local file with
 save_urm so the FWC service is queried only once.
 """
 import numpy as np

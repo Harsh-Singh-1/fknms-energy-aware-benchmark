@@ -1,4 +1,3 @@
 Per-scene Cohen's kappa, geographic holdout, all nine models:
 min = 0.0926 at [('s2_20231219', '2D_CNN')]
 max = 0.4277 at [('spring_2024', '2D_CNN')]
-Quote this computed range in the abstract/conclusion in place of any untraceable figure.

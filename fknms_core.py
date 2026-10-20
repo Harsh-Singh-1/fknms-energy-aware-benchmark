@@ -1,15 +1,14 @@
 """
 fknms_core.py
-Shared core for the FKNMS IEEE Access revision experiments (E1-E7).
+Shared core for the FKNMS benchmark pipeline.
 
 Ports the preprocessing, Lyzenga depth-invariant index (DII), and fixed-threshold
-spectral labelling from the original 02b_classify_only.py, and adds the
-machinery the reviewers asked for: fold-internal threshold derivation,
-spatial cross-validation, a wider model zoo, a genuine patch-based 2D CNN,
-proper per-stage energy measurement, and statistical tests.
+spectral labelling from the original pipeline, and adds fold-internal threshold
+derivation, spatial cross-validation, a wider model zoo, a genuine patch-based
+2D CNN, proper per-stage energy measurement, and statistical tests.
 
-The default (global) code path reproduces the V3 protocol so the numbers
-stay consistent with the submitted manuscript; the train_mask hooks let the
+The default (global) code path reproduces the fixed-threshold labeling protocol
+so the numbers stay consistent with the article; the train_mask hooks let the
 spatial-CV scripts derive every data-dependent threshold from training
 pixels only.
 
@@ -105,8 +104,8 @@ def water_mask(bands, scl, ndwi):
 def fit_water_column(bands, water, train_mask=None):
     """Derive depth-invariant parameters (deep threshold, deep medians,
     attenuation ratios). If train_mask is given they are derived from
-    training pixels only, which removes the label/feature leakage the
-    reviewers flagged for the random split.
+    training pixels only, which prevents label/feature leakage across the
+    train-test split.
     """
     b02, b03, b04 = bands["B02"], bands["B03"], bands["B04"]
     m = water if train_mask is None else (water & train_mask)
@@ -158,7 +157,7 @@ def apply_features(bands, water, params):
 
 
 def make_labels(feats, deep, shallow, use_dii=True):
-    """Fixed-threshold spectral pseudo-labels (the same rules as V3), applied in
+    """Fixed-threshold spectral pseudo-labels (the rules in Table 3), applied in
     the order Sand, then Seagrass, then Coral; the deep-water exclusion uses a
     scene-derived 5th-percentile cutoff. use_dii=False is
     kept for the DII ablation. NOTE: these labels are generated from the same
